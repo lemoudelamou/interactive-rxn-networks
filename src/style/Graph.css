@@ -1,0 +1,73 @@
+.graph-container {
+    display: flex;
+    margin-top: 10px;
+  }
+  
+  .graph-view {
+    height: 600px;
+    border: 1px solid lightgray;
+    width: 80%;
+    margin-left: 20px;
+
+  }
+  
+  .sidebar {
+    width: 30%;
+    padding: 20px;
+    border-left: 1px solid lightgray;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.7)), #3f8176;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.4);
+
+
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+  
+  .table th, .table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+  }
+  
+  .table th {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+  }
+  
+  .table td {
+    background-color: #000;
+  }
+  
+  .table tr:nth-child(even) td {
+    background-color: #f2f2f2;
+  }
+  
+  .table tr:hover td {
+    background-color: #f1f1f1;
+  }
+  
+  .table caption {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .table thead {
+    background-color: #000;
+    color: #ffffff;
+  }
+  
+  
+
+  .empty-message {
+    font-style: italic;
+    color: #ffffff;
+  }
+  
