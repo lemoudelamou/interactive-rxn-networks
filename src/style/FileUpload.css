@@ -1,0 +1,160 @@
+.container_upload {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 10px;
+    padding-top: 100px;
+    font-family: 'Arial', sans-serif;
+    
+}
+
+.container_upload h3 {
+    color: #333; 
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.upload-box {
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+    
+}
+
+.container_upload input[type="file"] {
+    padding: 10px;
+    border: 2px solid #3f8176; 
+    border-radius: 5px;
+    background-color: #ffffff; 
+    font-size: 1rem;
+    color: #333; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 300px; 
+    text-align: center;
+    
+}
+
+.container_upload input[type="file"]:hover {
+    background-color: #f1f1f1;
+    border-color: #45a049;
+}
+
+.container_upload input[type="file"]:focus {
+    outline: none;
+    border-color: #45a049;
+    box-shadow: 0 0 5px rgba(72, 192, 94, 0.5);
+}
+
+.process-file-button {
+    padding: 10px 20px;
+    background-color: #3f8176; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.4);
+
+}
+
+.process-file-button:hover {
+    background-color: #45a049; 
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); 
+    transform: translateY(-2px); 
+}
+
+.process-file-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed; 
+    box-shadow: none; 
+    transform: none;
+}
+
+.process-file-button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(72, 192, 94, 0.5); 
+}
+
+
+
+/* Spinner */
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    padding: 5px;
+    border: 1px solid red;
+    background-color: #ffe6e6;
+    border-radius: 5px;
+  }
+
+
+  @media only screen and (max-width: 950px) {
+
+    .container_upload h3 {
+      margin-top: 5px;
+      color: #333; 
+      font-size: 1rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+  }
+
+    .container_upload input[type="file"] {
+      padding: 10px;
+      border: 2px solid #3f8176; 
+      border-radius: 5px;
+      background-color: #ffffff; 
+      font-size: 0.7rem;
+      color: #333; 
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 200px; 
+      text-align: center;
+  }
+
+  .process-file-button {
+    padding: 10px 20px;
+    background-color: #3f8176; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.3s ease; 
+}
+}
