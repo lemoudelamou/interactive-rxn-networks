@@ -1,74 +1,51 @@
-
+/* Container and Layout */
 .page-container {
   padding: 20px;
   min-height: calc(100vh - 50px); 
   display: flex;
   flex-direction: column;
-  font-family: 'Arial', sans-serif;
 }
 
-/* Body style */
-body {
-  overflow: auto; 
-  margin: 0;
-  padding: 0; 
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-
-}
-
-/* Header style */
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
+/* Header */
+.header {
   display: flex;
   align-items: center;
   gap: 20px;
-  width: 100%;
   margin-bottom: 20px;
   background-color: #3f8176;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.4);
   padding: 10px 20px;
-  overflow: hidden;
-  z-index: 1000;
 }
-
-
-
-.logo {
-  width: 50px;
-  height: auto;
-}
-
-.title-box {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 400;
-  padding: 5px 25px;
-  border-radius: 10px;
-  text-align: center;
-  margin: 0;
-  white-space: nowrap;
-  font-family: 'Arial', sans-serif;
-
-}
-
-
 
 .instruction-button {
   background-color: #3f8176;
   color: #ffffff;
   font-weight: bold;
   padding: 8px 16px;
-  margin-right: 70px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  position: absolute;
-  top: 20px;         
-  right: 10px;      
+  margin-left: 800px;
+}
+
+.instruction-button:hover {
+  background-color: #3f819f;
+}
+
+.logo {
+  width: 70px;
+  height: auto;
+}
+
+.title-box {
+  color: white;
+  font-size: 2rem;
+  font-weight: 400;
+  padding: 5px 25px;
+  border-radius: 10px;
+  text-align: center;
+  margin: 0;
+  white-space: nowrap;
 }
 
 .App {
@@ -94,11 +71,11 @@ footer {
   font-family: Arial, sans-serif;
   text-align: center;
   width: 100%;
+  height: 50px;
   position: fixed;
   bottom: 0;
   left: 0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.4);
-  z-index: 1000;
 
 }
 
@@ -106,13 +83,13 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 30px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .footer-left,
 .footer-right {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .footer-right a {
@@ -125,49 +102,19 @@ footer {
   color: #fff;
 }
 
-
-
-
-
-
-@media only screen and (max-width: 950px) {
-  .header {
-    display: flex;            
-    align-items: center;     
-    justify-content:flex-start;  
-    gap: 10px;                
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
   }
 
-  .logo {
-    width: 40px;
-    height: auto;
+  .header {
+    flex-direction: column;
+    text-align: center;
   }
 
   .title-box {
-    color: white;
-    font-size: 1rem;
-    font-weight: 200;
-    border-radius: 10px;
-    text-align: center;
-    margin: 0;
-    white-space: nowrap;
-    font-family: 'Arial', sans-serif;
+    font-size: 1.5rem;
   }
-
-  .instruction-button {
-    background-color: #3f8176;
-    color: #ffffff;
-    font-weight: bold;
-    padding: 8px 16px;
-    width: 30px;
-    height: 30px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;            
-    align-items: center;     
-    justify-content:flex-start;  
-    width: auto;     
-}
-
 }
