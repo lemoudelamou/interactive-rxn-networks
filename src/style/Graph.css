@@ -1,73 +1,71 @@
+.container {
+  position: relative; 
+  height: 100%;
+  overflow: hidden; 
+  
+}
+
 .graph-container {
-    display: flex;
-    margin-top: 10px;
-  }
-  
-  .graph-view {
-    height: 600px;
-    border: 1px solid lightgray;
-    width: 80%;
-    margin-left: 20px;
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  margin-top: 10px;
+  padding-bottom: 100px;
+  position: relative;
+  transition: all 0.3s ease-in-out;
 
-  }
-  
-  .sidebar {
-    width: 30%;
-    padding: 20px;
-    border-left: 1px solid lightgray;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.7)), #3f8176;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.graph-container.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  z-index: 1000;
+}
+
+.screenshot-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.graph-view {
+  flex: 1;
+  border: 1px solid #ccc;
+  height: 600px;
+}
 
 
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-  }
-  
-  .table th, .table td {
-    border: 1px solid #ddd;
-    padding: 12px 15px;
-    text-align: left;
-  }
-  
-  .table th {
-    background-color: #4CAF50;
-    color: white;
-    font-size: 16px;
-  }
-  
-  .table td {
-    background-color: #000;
-  }
-  
-  .table tr:nth-child(even) td {
-    background-color: #f2f2f2;
-  }
-  
-  .table tr:hover td {
-    background-color: #f1f1f1;
-  }
-  
-  .table caption {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .table thead {
-    background-color: #000;
-    color: #ffffff;
-  }
-  
-  
+.graph-container.fullscreen .graph-view {
+  height: 100%; 
+}
 
-  .empty-message {
-    font-style: italic;
-    color: #ffffff;
+.graph-container.fullscreen .sidebar {
+  width: 300px; 
+  max-height: 100%; 
+  overflow-y: auto;
+}
+
+
+
+@media only screen and (max-width: 950px) {
+  .legend {
+    bottom: auto;
+    right: auto;
+    width: 250px;  
+    font-size: 14px;  
   }
-  
+
+  .graph-container.fullscreen .sidebar {
+    width: 200px; 
+    max-height: 100%; 
+    overflow-y: auto;
+    z-index: 10;
+  }
+ 
+}
+
