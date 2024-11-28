@@ -1,0 +1,37 @@
+.content {
+    margin-top: 150px;
+}
+.white-box {
+    padding-top: 20px; 
+    padding-bottom: 50px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    
+}
+
+.title {
+    padding-top: 100px;
+}
+
+
+@media only screen and (max-width: 950px) {
+    .content {
+        margin-top: 80px;
+    }
+  
+    h1 {
+        font-size: 1rem;
+    }
+    .white-box {
+        padding-top: 10px; 
+        padding-bottom: 50px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); 
+  }
+}
+
+
+
+
+
+
