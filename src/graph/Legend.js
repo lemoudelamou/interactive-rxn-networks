@@ -11,12 +11,7 @@ const Legend = () => (
       <li>
         <span className="legend-color" style={{ backgroundColor: '#e74c3c' }}></span> Reaction
       </li>
-      <li>
-        <span className="legend-line" style={{ borderColor: '#3498db' }}></span> Molecule → Reaction
-      </li>
-      <li>
-        <span className="legend-line" style={{ borderColor: '#e74c3c' }}></span> Reaction → Molecule
-      </li>
+      
     </ul>
   </div>
 );

@@ -3,7 +3,7 @@
 
 
 import '../style/Graph.css';
-import React, { useEffect, useRef, useMemo, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Network } from 'vis-network';
 import '../style/Graph.css';
 import Controls from './Controls';
@@ -34,20 +34,12 @@ const Graph = ({ nodesData, edgesData }) => {
       }));
   
       const edges = edgesData.map((edge) => {
-        const fromType = nodesData.find((node) => node.id === edge.from)?.type;
-        const toType = nodesData.find((node) => node.id === edge.to)?.type;
   
-        const edgeColor =
-          fromType === 'molecule' && toType === 'reaction'
-            ? { color: '#3498db', highlight: '#1f77b4', opacity: 0.8 } 
-            : { color: '#e74c3c', highlight: '#f39c12', opacity: 0.8 } 
-            
-  
+       
         return {
           from: edge.from,
           to: edge.to,
           arrows: 'to',
-          color: edgeColor,
           width: 2,
           smooth: { type: 'dynamic' },
         };
@@ -77,6 +69,7 @@ const Graph = ({ nodesData, edgesData }) => {
   return (
     <div className={`graph-container ${isFullscreen ? 'fullscreen' : ''}`}>
       <Controls
+        className="controls" 
         isFullscreen={isFullscreen}
         setIsFullscreen={setIsFullscreen}
         networkRef={networkRef}
