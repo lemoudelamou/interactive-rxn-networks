@@ -1,8 +1,12 @@
 import { loadReactionsFromFile } from "./loadReactions";
 import { validateReactionData } from "./validateReactions";
 import { createEdges } from "./createEdges";
+import { getFileDataById, getAllFileData } from '../api/api';
+
 
 export async function addReaction(uploadedFile, setNodes, setEdges) {
+
+  
   console.log("Adding reaction and edges for formula pathway:", uploadedFile);
 
   try {

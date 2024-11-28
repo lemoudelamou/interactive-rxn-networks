@@ -1,3 +1,4 @@
+
 export async function loadReactionsFromFile(uploadedFile) {
     console.log("Loading reactions and edges from uploaded file:", uploadedFile.name);
   
@@ -8,6 +9,9 @@ export async function loadReactionsFromFile(uploadedFile) {
         reader.onerror = () => reject(reader.error);
         reader.readAsText(uploadedFile);
       });
+      
+      localStorage.setItem("uploadedFileName", uploadedFile.name);
+
   
       const moleculePattern = /(\d+) \[\s*type=(molecule)\s*ID=(\d+)\s*smiles\s*=\s*"?([^"\s]+)"?\s*formula="?([^ ]+)"?\s*RXNID="?([^ ]*)"?\s*\];/g;
       const reactionPattern = /(\d+) \[\s*type=(reaction)\s*ID=None\s*smiles\s*=\s*"?([^"\s]+)"?\s*formula="?([^"]+)"?\s*RXNID="?([^ ]*)"?\s*];/g;

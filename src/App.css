@@ -18,58 +18,6 @@ body {
 
 }
 
-/* Header style */
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-  margin-bottom: 20px;
-  background-color: #3f8176;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.4);
-  padding: 10px 20px;
-  overflow: hidden;
-  z-index: 1000;
-}
-
-
-
-.logo {
-  width: 50px;
-  height: auto;
-}
-
-.title-box {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 400;
-  padding: 5px 25px;
-  border-radius: 10px;
-  text-align: center;
-  margin: 0;
-  white-space: nowrap;
-  font-family: 'Arial', sans-serif;
-
-}
-
-
-
-.instruction-button {
-  background-color: #3f8176;
-  color: #ffffff;
-  font-weight: bold;
-  padding: 8px 16px;
-  margin-right: 70px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  position: absolute;
-  top: 20px;         
-  right: 10px;      
-}
 
 .App {
   text-align: center;
@@ -87,43 +35,7 @@ h1 {
 
 
 /* Footer Styles */
-footer {
-  background-color: #3f8176;
-  color: #fff;
-  padding: 15px 20px;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.4);
-  z-index: 1000;
 
-}
-
-.footer-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 30px;
-  margin: 0 auto;
-}
-
-.footer-left,
-.footer-right {
-  font-size: 12px;
-}
-
-.footer-right a {
-  color: #ccc;
-  text-decoration: none;
-  margin-left: 10px;
-}
-
-.footer-right a:hover {
-  color: #fff;
-}
 
 
 
@@ -138,36 +50,6 @@ footer {
     gap: 10px;                
   }
 
-  .logo {
-    width: 40px;
-    height: auto;
-  }
-
-  .title-box {
-    color: white;
-    font-size: 1rem;
-    font-weight: 200;
-    border-radius: 10px;
-    text-align: center;
-    margin: 0;
-    white-space: nowrap;
-    font-family: 'Arial', sans-serif;
-  }
-
-  .instruction-button {
-    background-color: #3f8176;
-    color: #ffffff;
-    font-weight: bold;
-    padding: 8px 16px;
-    width: 30px;
-    height: 30px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;            
-    align-items: center;     
-    justify-content:flex-start;  
-    width: auto;     
-}
+  
 
 }
