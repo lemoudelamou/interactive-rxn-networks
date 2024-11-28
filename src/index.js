@@ -16,7 +16,6 @@ function AppRouter() {
     <div>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/graph" element={<Graph />} />
         <Route path="/graph-list" element={<GraphList />} />
         <Route path="/graph-page" element={<GraphPage />} /> {/* Graph page */}
 
