@@ -1,0 +1,82 @@
+  .header-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+    background-color: #3f8176;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.4);
+    padding: 10px 20px;
+    overflow: hidden;
+    z-index: 1000;
+  }
+
+  .second-container {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 10px;
+  }
+  
+  .logo {
+    width: 50px;
+    height: auto;
+  }
+  
+  .title-box {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 400;
+    padding: 5px 25px;
+    border-radius: 10px;
+    text-align: center;
+    margin: 0;
+    white-space: nowrap;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .instruction-button {
+    background-color: #3f8176;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 8px 16px;
+    margin-right: 70px; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px; 
+    right: 5px; 
+  }
+  
+  @media only screen and (max-width: 950px) {
+    .header-container{
+      height: 30px;
+    }
+
+    .logo {
+      width: 40px;
+      height: auto;
+    }
+  
+    .title-box {
+      font-size: 1rem;
+      font-weight: 200;
+    }
+  
+    .instruction-button {
+      padding: 8px 16px;
+      width: 30px; 
+      height: 30px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: flex-end; 
+      margin-right: 40px; 
+      top: 10px;
+    }
+  }
+  
