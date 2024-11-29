@@ -45,35 +45,23 @@
     
 }
 
-
+.card-button {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    background-color: #3f8176;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.3s;
+}
 
 .card-button:hover {
     background-color: #0056b3;
 }
-
-.del-button {
-    display:flex ;
-    background-color: #3f8176;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 20px;
-  }
-  
-  .del-button:hover {
-    background-color: #0056b3; 
-    color: #e6e6e6;
-  }
-
-  .card-footer {
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-  }
 
 
 @media only screen and (max-width: 1024px) {
@@ -89,26 +77,14 @@
 
     .card-title {
         font-weight: bold;
-        font-size: 0.8rem;
+        font-size: 0.5rem;
       
     }
 
     .card-text {
         margin-bottom: 10px;
-        font-size: 0.7rem;
+        font-size: 0.5rem;
     }
-
-    .del-button {
-        width: 40px;
-        height: 30px;
-    }
-
-    i {
-        font-size: 0.7rem;
-        margin-left: -5px;
-    }
-    
-    
     
 
 }
