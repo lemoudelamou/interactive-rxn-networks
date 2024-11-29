@@ -61,3 +61,17 @@ export const getAllFileData = async () => {
         throw error;
     }
 };
+
+
+export const deleteGraphById = async (id) => {
+
+    try {
+        const response = await axios.delete(`${API_BASE_URL}/files/${id}`);
+        console.log('Delete success:', response.data);
+
+        return true;
+    } catch (error) {
+        console.error('Error deleting patient:', error);
+        return false;
+    }
+};
