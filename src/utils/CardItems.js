@@ -10,7 +10,7 @@ const CardItem = ({ card, onClick, onDeleteClick }) => (
       <Card.Text>{card.content}</Card.Text>  
     </Card.Body>
     <Card.Footer className="text-center">
-    <button className="del-button" onClick={(e) => {
+    <button className="card-button" onClick={(e) => {
           e.stopPropagation(); // Prevent triggering the card's onClick
           onDeleteClick();
         }}><i class="fa-solid fa-trash"></i>
