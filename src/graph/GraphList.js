@@ -5,12 +5,13 @@ import CardItem from "../utils/CardItems.js";
 import "../style/GraphList.css";
 import Header from "../components/Header.js";
 import Footer from "../components/Footer.js";
-import { getAllFileData } from "../api/api.js";
+import { getAllFileData, deleteGraphById } from "../api/api.js";
+
 
 const GraphList = () => {
   const [cardsData, setCardsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,8 +37,7 @@ const GraphList = () => {
   }, []);
 
   const generateCardData = (item, index) => {
-    const [{id ,fileName, data}] = item;
-
+    const [{ id, fileName, data }] = item;
 
     try {
       const parsedData = JSON.parse(data);
@@ -48,23 +48,40 @@ const GraphList = () => {
       console.log("Extracted Data:", extractedData);
 
       return {
+        id, 
         title: `Graph ${index + 1} (${filenameData})`,
         imageSrc: Logo,
         onClick: () => handleCardClick(edges, extractedData),
+        onDeleteClick: () => handleDeleteCard(id, index), 
       };
     } catch (error) {
       console.error(`Error parsing data for item ${index + 1}:`, error);
       return {
+        id,
         title: `Graph ${index + 1} (${fileName})`,
         content: <p>Error loading data for this graph.</p>,
         imageSrc: Logo,
-        onClick: null, 
+        onClick: null,
+        onDeleteClick: () => handleDeleteCard(id, index),
       };
     }
   };
 
   const handleCardClick = (edgesFromFile, extractedData) => {
     navigate("/graph-page", { state: { edges: edgesFromFile, extractedData } });
+  };
+
+  const handleDeleteCard = async (id, index) => {
+    try {
+      await deleteGraphById(id); 
+      console.log(`Graph with ID ${id} deleted successfully.`);
+      const updatedCards = [...cardsData];
+      updatedCards.splice(index, 1); 
+      setCardsData(updatedCards); 
+    } catch (err) {
+      console.error(`Failed to delete graph with ID ${id}:`, err);
+      setError("Failed to delete the graph.");
+    }
   };
 
   return (
@@ -81,7 +98,12 @@ const GraphList = () => {
             <p className="error-message">{error}</p>
           ) : cardsData.length > 0 ? (
             cardsData.map((card, index) => (
-              <CardItem key={index} card={card} onClick={card.onClick} />
+              <CardItem
+                key={index}
+                card={card}
+                onClick={card.onClick}
+                onDeleteClick={card.onDeleteClick}
+              />
             ))
           ) : (
             <p>No graphs available.</p>
