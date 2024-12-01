@@ -52,7 +52,7 @@
   position: absolute;
   top: 15px;
   right: 15px;
-  display: inline-block; /* Ensure button is treated as an inline block for the tooltip */
+  display: inline-block; 
 }
 
 .instruction-button[data-tooltip]:hover::after {
