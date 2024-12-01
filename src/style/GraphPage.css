@@ -1,12 +1,18 @@
 .graph-page {
     text-align: center;
     padding: 20px;
+    
   }
   
   .graph-page h1 {
     font-size: 24px;
     margin-bottom: 20px;
     color: #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.4);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #3f8176;
+    color:#ffffff;
   }
   
   .back-button {
