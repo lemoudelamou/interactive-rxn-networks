@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../assets/logo-Haber.png";
+import Logo from "../assets/crn.jpeg";
 import CardItem from "../utils/CardItems.js";
 import "../style/GraphList.css";
 import Header from "../components/Header.js";
@@ -49,7 +49,7 @@ const GraphList = () => {
 
       return {
         id, 
-        title: `Graph ${index + 1} (${filenameData})`,
+        title: `${filenameData}`,
         imageSrc: Logo,
         onClick: () => handleCardClick(edges, extractedData),
         onDeleteClick: () => handleDeleteCard(id, index), 
