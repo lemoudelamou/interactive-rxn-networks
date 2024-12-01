@@ -74,10 +74,9 @@ const GraphList = () => {
   const handleDeleteCard = async (id, index) => {
     try {
       await deleteGraphById(id); 
-      console.log(`Graph with ID ${id} deleted successfully.`);
-      const updatedCards = [...cardsData];
-      updatedCards.splice(index, 1); 
-      setCardsData(updatedCards); 
+      console.log(`Graph with ID ${id} deleted successfully.`); 
+      setCardsData((prevCards) => prevCards.filter((_, i) => i !== index));
+
     } catch (err) {
       console.error(`Failed to delete graph with ID ${id}:`, err);
       setError("Failed to delete the graph.");
