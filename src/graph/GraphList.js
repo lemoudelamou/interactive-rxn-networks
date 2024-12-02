@@ -24,9 +24,7 @@ const GraphList = () => {
         const reactionData = await getAllFileData();
         console.log("API Response:", reactionData);
 
-        const generatedCards = reactionData.map((item, index) =>
-          generateCardData(item, index)
-        );
+        const generatedCards = reactionData.map((generateCardData));
 
         setCardsData(generatedCards);
       } catch (err) {
