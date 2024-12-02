@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+// https://dev.to/demola12/optimizing-event-handlers-in-react-using-usecallback-5hc3#:~:text=React's%20useCallback%20hook%20is%20a,creation%20of%20functions%20during%20renders.
+
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/crn.jpeg";
 import CardItem from "../utils/CardItems.js";
@@ -16,6 +18,8 @@ const GraphList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const reactionData = await getAllFileData();
         console.log("API Response:", reactionData);
@@ -36,46 +40,43 @@ const GraphList = () => {
     fetchData();
   }, []);
 
-  const generateCardData = (item, index) => {
+  const generateCardData = useCallback((item) => {
     const [{ id, fileName, data }] = item;
 
     try {
       const parsedData = JSON.parse(data);
-      const { edges = [], extractedData = [], filenameData = fileName } = parsedData;
+      const { edges = [], extractedData = [] } = parsedData;
 
-      console.log("Filename:", filenameData);
+      console.log("Filename:", fileName);
       console.log("Edges:", edges);
       console.log("Extracted Data:", extractedData);
 
       return {
         id, 
-        title: `${filenameData}`,
+        title: fileName,
         imageSrc: Logo,
-        onClick: () => handleCardClick(edges, extractedData),
-        onDeleteClick: () => handleDeleteCard(id, index), 
+        onClick: () => navigate("/graph-page", { state: { edges, extractedData } }),
+        onDeleteClick: () => handleDeleteCard(id), 
       };
     } catch (error) {
-      console.error(`Error parsing data for item ${index + 1}:`, error);
+      console.error(`Error parsing data for item ${id}:`, error);
       return {
         id,
-        title: `Graph ${index + 1} (${fileName})`,
+        title: `Graph (${fileName || "Unknown"})`,
         content: <p>Error loading data for this graph.</p>,
         imageSrc: Logo,
         onClick: null,
-        onDeleteClick: () => handleDeleteCard(id, index),
+        onDeleteClick: () => handleDeleteCard(id),
       };
     }
-  };
+  }, [navigate]);
 
-  const handleCardClick = (edgesFromFile, extractedData) => {
-    navigate("/graph-page", { state: { edges: edgesFromFile, extractedData } });
-  };
 
-  const handleDeleteCard = async (id, index) => {
+  const handleDeleteCard = async (id) => {
     try {
       await deleteGraphById(id); 
       console.log(`Graph with ID ${id} deleted successfully.`); 
-      setCardsData((prevCards) => prevCards.filter((_, i) => i !== index));
+      setCardsData((prevCards) => prevCards.filter((card) => card.id !== id));
 
     } catch (err) {
       console.error(`Failed to delete graph with ID ${id}:`, err);
