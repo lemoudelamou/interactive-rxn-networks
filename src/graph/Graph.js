@@ -15,59 +15,68 @@ const Graph = ({ nodesData, edgesData }) => {
   const graphContainerRef = useRef(null);
   const [selectedNode, setSelectedNode] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-
   const networkRef = useRef(null);
+
+  const initializeNetwork = () => {
+
+  const nodes = nodesData.map((node) => ({
+      id: node.id,
+      label: node.type === 'reaction' ? '' : node.label,
+      smiles: node.smiles,
+      type: node.type,
+      formula: node.formula,
+      title: `ID: ${node.id}\nLabel: ${node.label}`,
+      color: node.type === 'reaction' ? '#e74c3c' : '#3498db',
+      shape: 'ellipse',
+    }));
+    const edges = edgesData.map((edge) => ({
+      from: edge.from,
+      to: edge.to,
+      arrows: 'to',
+      width: 2,
+      smooth: { type: 'dynamic' },
+    }));
+
+    const network = new Network(
+      graphContainerRef.current,
+      { nodes, edges },
+      networkOptions
+    );
+
+    networkRef.current = network;
+
+    network.on('selectNode', (event) => {
+      const nodeId = event.nodes[0];
+      const selected = nodesData.find((node) => node.id === nodeId);
+      setSelectedNode(selected);
+    });
+
+    return network;
+  };
+
 
   useEffect(() => {
     if (nodesData && edgesData && graphContainerRef.current) {
-      setSelectedNode(null);
-  
-      const nodes = nodesData.map((node) => ({
-        id: node.id,
-        label: node.type === 'reaction' ? '' : node.label,
-        smiles: node.smiles,
-        type: node.type,
-        formula: node.formula,
-        title: `ID: ${node.id}\nLabel: ${node.label}`,
-        color: node.type === 'reaction' ? '#e74c3c' : '#3498db',
-        shape: 'ellipse',
-      }));
-  
-      const edges = edgesData.map((edge) => {
-  
-       
-        return {
-          from: edge.from,
-          to: edge.to,
-          arrows: 'to',
-          width: 2,
-          smooth: { type: 'dynamic' },
-        };
-      });
-  
-      const network = new Network(graphContainerRef.current, { nodes, edges }, networkOptions);
-      networkRef.current = network;
-  
-      network.on('selectNode', (event) => {
-        const nodeId = event.nodes[0];
-        const selected = nodesData.find((node) => node.id === nodeId);
-        setSelectedNode(selected);
-      });
-  
+      const network = initializeNetwork();
+
       return () => {
         network.off('selectNode');
         network.destroy();
       };
     }
   }, [nodesData, edgesData]);
-  
+
   useEffect(() => {
-    const network = networkRef.current;
-    if (network) network.fit({ animation: true });
+    if (networkRef.current) {
+      networkRef.current.fit({ animation: true });
+    }
   }, [isFullscreen]);
+ 
 
   return (
     <div className={`graph-container ${isFullscreen ? 'fullscreen' : ''}`}>
+    
+
       <Controls
         className="controls" 
         isFullscreen={isFullscreen}
