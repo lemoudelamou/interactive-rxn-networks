@@ -1,70 +1,142 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Master Project
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Software project "Interactive Generation and Visualization of Chemical Reaction Networks" for the academic course "Master Project WiSe24/25" at the Berliner Hochschule für Technik (BHT), in cooperation with the Fritz-Haber-Institut (FHI) of the Max-Planck-Gesellschaft.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Prerequisites 
 
-### `npm run build`
+Before you start... Everything you need to successfully run and develop this project is described in this README.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Requirements
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Software 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Some form of UNIX-based shell like bash; especially on Windows, use PowerShell or Command Prompt
+* Git 
+* NodeJS version ^20.5.x 
+	* Including NPM version ^10.3.x
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Actions
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* #### Using venv
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+        python3 -m venv virtualenvname
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+* #### Command Syntax: 
 
-## Learn More
+        /path/to/python3 -m venv /path/to/directory/virtual_env_name
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* #### Using virtualenv
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+        virtualenv -p python3 virtualenvname
 
-### Code Splitting
+* #### Command Syntax: 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+        virtualenv -p /path/to/python3 /path/to/directory/virtual_env_name
 
-### Analyzing the Bundle Size
+* #### Activate the virtual environment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    * On Linux, Unix or MacOS, using the terminal or bash shell: 
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+            source /path/to/venv/bin/activate (e.g. source virtualenvname/bin/activate)
 
-### Advanced Configuration
+    * On Unix or MacOS, using the csh shell: 
+    
+            source /path/to/venv/bin/activate.csh
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+    * On Unix or MacOS, using the fish shell: 
+    
+            source /path/to/venv/bin/activate.fish
 
-### Deployment
+    * On Windows using the Command Prompt: 
+    
+            path\to\venv\Scripts\activate.bat
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+    * On Windows using PowerShell: 
+    
+            path\to\venv\Scripts\Activate.ps1
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* #### Deactivating the virtual environment
+    * On Linux, Unix or MacOS, using the terminal or bash shell: 
+    
+            deactivate
+
+    * On Windows using the Command Prompt: 
+            path\to\venv\Scripts\deactivate.bat
+
+    * On Windows using PowerShell: 
+    
+            deactivate
+
+## Branches
+
+The repository consistently holds two branches, main and dev.
+
+### Main Branch
+
+Considered as the "release" branch. Commits on this branch need to be approved via Pull Request by a minimum of one other team member. The branch requires a linear Git history.
+
+### dev Branch
+
+Considered as the "newest features/fixes" branch This is a fast-paced branch for internal development, so expect a lot of changes while you are working on it. Holds the latest additions to the code base.
+
+
+## Frontend and Backend
+
+### Frontend 
+
+* Simulation visualization layer for the web browser 
+* Readme 
+* Install dependencies: 
+
+        npm run install
+* Remove dependencies: 
+
+        npm run remove
+* Install serve globally:   
+
+        npm install -g serve
+
+Build for production: 
+
+        npm run build
+
+Serve the app: 
+
+        serve -s build
+
+
+### Backend
+
+* Create a virtual environment:
+ 
+        python -m venv venv
+
+* Activate the virtual environment:
+
+    * On Windows: 
+    
+            venv\Scripts\activate
+
+    * On macOS/Linux: 
+    
+            source venv/bin/activate
+
+* Install dependencies: 
+
+    * Ensure you have pip installed and a Python environment set up.
+
+            pip install -r requirements.txt
+    * You will need to install the CatMAP package. The steps to follow can be found at this link: https://catmap.readthedocs.io/en/latest/installation.html#
+
+* Run the backend: 
+
+        python3 example.py
