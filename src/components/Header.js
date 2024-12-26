@@ -1,5 +1,5 @@
 import { React, useState } from 'react';
-import Modal from '../utils/Modal.js';
+import Modal from '../modals/InstructionModal.js';
 import Image from 'react-bootstrap/Image';
 import logo from '../assets/logo-Haber.png';
 import '../style/Header.css';
@@ -53,3 +53,5 @@ const Header = () => {
 };
 
 export default Header;
+
+
