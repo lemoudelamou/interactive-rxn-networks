@@ -5,8 +5,8 @@ import App from './App.js';
 import GraphList from './graph/GraphList.js';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import Graph from './graph/Graph.js';
 import GraphPage from './graph/GraphPage.js';
+import { PickleProvider } from "./context/FileDataContext";
 
 
 
@@ -17,7 +17,7 @@ function AppRouter() {
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/graph-list" element={<GraphList />} />
-        <Route path="/graph-page" element={<GraphPage />} /> {/* Graph page */}
+        <Route path="/graph-page" element={<GraphPage />} /> 
 
       </Routes>
     </div>
@@ -27,6 +27,8 @@ function AppRouter() {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
       <BrowserRouter>
+      <PickleProvider>
           <AppRouter/>
+      </PickleProvider>
       </BrowserRouter>
 );
