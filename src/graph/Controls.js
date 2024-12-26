@@ -1,35 +1,45 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import html2canvas from 'html2canvas';
-import '../style/Controls.css'
+import '../style/Controls.css';
 
 const Controls = ({ isFullscreen, setIsFullscreen, networkRef, graphContainerRef }) => {
-  const zoomIn = () => {
+  const adjustZoom = (zoomChange) => {
     const network = networkRef.current;
-    network?.getScale() && network.moveTo({ scale: network.getScale() + 0.1 });
+    if (network?.getScale) {
+      const currentScale = network.getScale();
+      const newScale = currentScale + zoomChange;
+
+      if (newScale > 0) {
+        network.moveTo({ scale: newScale });
+      } else {
+        console.warn("Zoom scale must be greater than zero.");
+      }
+    }
   };
 
-  const zoomOut = () => {
-    const network = networkRef.current;
-    network?.getScale() && network.moveTo({ scale: network.getScale() - 0.1 });
-  };
-
-  const captureScreenshot = () => {
-    const graphCanvas = graphContainerRef.current.querySelector('canvas');
+  const captureScreenshot = async () => {
+    const graphCanvas = graphContainerRef.current?.querySelector('canvas');
     const legendContainer = document.querySelector('.legend');
   
-    if (graphCanvas && legendContainer) {
-      const originalFontSize = window.getComputedStyle(legendContainer).fontSize;
+    if (!graphCanvas || !legendContainer) return;
   
-      legendContainer.style.fontSize = '18px';  
+    const originalFontSize = legendContainer.style.fontSize;
+    legendContainer.style.fontSize = '14px'; 
   
+    try {
       const graphHeight = graphCanvas.height;
       const graphWidth = graphCanvas.width;
-      const legendHeight = legendContainer.offsetHeight;
-      const legendWidth = legendContainer.offsetWidth;
+  
+      const legendCanvas = await html2canvas(legendContainer, { 
+        scale: Math.max(1, window.devicePixelRatio), 
+        useCORS: true 
+      });
   
       const newCanvas = document.createElement('canvas');
-      newCanvas.width = graphWidth;
-      newCanvas.height = graphHeight + legendHeight;
+      newCanvas.width = Math.max(graphWidth, legendCanvas.width);
+      newCanvas.height = graphHeight + legendCanvas.height;
+  
       const context = newCanvas.getContext('2d');
   
       context.fillStyle = '#ffffff';
@@ -37,36 +47,36 @@ const Controls = ({ isFullscreen, setIsFullscreen, networkRef, graphContainerRef
   
       context.drawImage(graphCanvas, 0, 0);
   
-      html2canvas(legendContainer, { scale: 1, useCORS: true }).then((legendCanvas) => {
-        context.drawImage(legendCanvas, 0, 0);
+      const legendXOffset = (newCanvas.width - legendCanvas.width);
+      context.drawImage(legendCanvas, legendXOffset, graphHeight);
   
-        const image = newCanvas.toDataURL('image/png');
-        const link = document.createElement('a');
-        link.href = image;
-        link.download = 'graph.png';
-        link.click();
-  
-        legendContainer.style.fontSize = originalFontSize;
-      });
+      const image = newCanvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = image;
+      link.download = 'graph_with_legend.png';
+      link.click();
+    } catch (error) {
+      console.error('Error capturing screenshot:', error);
+    } finally {
+      legendContainer.style.fontSize = originalFontSize; 
     }
   };
-  
   
 
   return (
     <div className="controls">
-      <button onClick={() => setIsFullscreen(!isFullscreen)}>
+      <Button onClick={() => setIsFullscreen((prev) => !prev)} className="control-btn">
         <i className={isFullscreen ? 'fas fa-compress' : 'fas fa-expand'}></i>
-      </button>
-      <button onClick={zoomIn}>
+      </Button>
+      <Button onClick={() => adjustZoom(0.1)} className="control-btn">
         <i className="fas fa-search-plus"></i>
-      </button>
-      <button onClick={zoomOut}>
+      </Button>
+      <Button onClick={() => adjustZoom(-0.1)} className="control-btn">
         <i className="fas fa-search-minus"></i>
-      </button>
-      <button onClick={captureScreenshot}>
+      </Button>
+      <Button onClick={captureScreenshot} className="control-btn">
         <i className="fas fa-camera"></i>
-      </button>
+      </Button>
     </div>
   );
 };

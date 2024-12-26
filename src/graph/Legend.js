@@ -11,6 +11,9 @@ const Legend = () => (
       <li>
         <span className="legend-color" style={{ backgroundColor: '#e74c3c' }}></span> Reaction
       </li>
+      <li>
+        <span className="legend-color" style={{ backgroundColor: '#3f8176' }}></span> Subnetwork
+      </li>
       
     </ul>
   </div>

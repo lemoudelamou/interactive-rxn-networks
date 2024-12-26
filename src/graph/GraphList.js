@@ -1,5 +1,3 @@
-// https://dev.to/demola12/optimizing-event-handlers-in-react-using-usecallback-5hc3#:~:text=React's%20useCallback%20hook%20is%20a,creation%20of%20functions%20during%20renders.
-
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/crn.jpeg";
@@ -7,8 +5,9 @@ import CardItem from "../utils/CardItems.js";
 import "../style/GraphList.css";
 import Header from "../components/Header.js";
 import Footer from "../components/Footer.js";
-import { getAllFileData, deleteGraphById } from "../api/api.js";
-
+import { getAllData, deleteGraph } from "../api/api.js";
+import ErrorMessages from "../constants/ErrorMessages"; 
+import SuccessMessages from "../constants/SuccessMessages"; 
 
 const GraphList = () => {
   const [cardsData, setCardsData] = useState([]);
@@ -21,64 +20,87 @@ const GraphList = () => {
       setLoading(true);
       setError(null);
       try {
-        const reactionData = await getAllFileData();
-        console.log("API Response:", reactionData);
+        const reactionData = await getAllData();
 
-        const generatedCards = reactionData.map((generateCardData));
-
-        setCardsData(generatedCards);
+        if (Array.isArray(reactionData.graphs)) {
+          const generatedCards = reactionData.graphs.map((item) => generateCardData(item));
+          setCardsData(generatedCards);
+        } else {
+          throw new Error(ErrorMessages.DATA_UNEXPECTED_FORMAT);
+        }
       } catch (err) {
         console.error("Error fetching data:", err);
-        setError("Failed to fetch graph data.");
+        setError(ErrorMessages.FETCH_DATA_FAILED);
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
-  const generateCardData = useCallback((item) => {
-    const [{ id, fileName, data }] = item;
+  const generateCardData = useCallback(
+    (item) => {
+      const { id, name, dot_data_1, pickle_data_1, free_energy } = item;
 
-    try {
-      const parsedData = JSON.parse(data);
-      const { edges = [], extractedData = [] } = parsedData;
+      let parsedData = {};
+      let parsedPickleData = {};
+      let parsedFreeEnergyData = {};
 
-      console.log("Filename:", fileName);
-      console.log("Edges:", edges);
-      console.log("Extracted Data:", extractedData);
+      try {
+        if (typeof dot_data_1 === "string") {
+          parsedData = JSON.parse(dot_data_1);
+          parsedPickleData = JSON.parse(pickle_data_1);
+          parsedFreeEnergyData = JSON.parse(free_energy);
+        } else if (
+          typeof dot_data_1 === "object" &&
+          dot_data_1 !== null &&
+          typeof pickle_data_1 === "object" &&
+          pickle_data_1 !== null &&
+          typeof free_energy === "object" &&
+          free_energy !== null
+        ) {
+          parsedData = dot_data_1;
+          parsedPickleData = pickle_data_1;
+          parsedFreeEnergyData = free_energy;
+        } else {
+          throw new Error(ErrorMessages.DATA_UNEXPECTED_FORMAT);
+        }
 
-      return {
-        id, 
-        title: fileName,
-        imageSrc: Logo,
-        onClick: () => navigate("/graph-page", { state: { edges, extractedData } }),
-        onDeleteClick: () => handleDeleteCard(id), 
-      };
-    } catch (error) {
-      console.error(`Error parsing data for item ${id}:`, error);
-      return {
-        id,
-        title: `Graph (${fileName || "Unknown"})`,
-        content: <p>Error loading data for this graph.</p>,
-        imageSrc: Logo,
-        onClick: null,
-        onDeleteClick: () => handleDeleteCard(id),
-      };
-    }
-  }, [navigate]);
+        const { edges = [], extractedData = [] } = parsedData;
+        const { data } = parsedPickleData;
+        const { freeEnergy } = parsedFreeEnergyData;
 
+        return {
+          id,
+          title: name,
+          imageSrc: Logo,
+          onClick: () =>
+            navigate("/graph-page", { state: { edges, extractedData, data, id, freeEnergy } }),
+          onDeleteClick: () => handleDeleteCard(id),
+        };
+      } catch (error) {
+        console.error(`Error parsing data for item ${id}:`, error);
+
+        return {
+          id,
+          title: `Graph (${name || "Unknown"})`,
+          content: <p>{ErrorMessages.DATA_UNEXPECTED_FORMAT}</p>,
+          imageSrc: Logo,
+          onClick: null,
+          onDeleteClick: () => handleDeleteCard(id),
+        };
+      }
+    },
+    [navigate]
+  );
 
   const handleDeleteCard = async (id) => {
     try {
-      await deleteGraphById(id); 
-      console.log(`Graph with ID ${id} deleted successfully.`); 
+      await deleteGraph(id);
       setCardsData((prevCards) => prevCards.filter((card) => card.id !== id));
-
     } catch (err) {
       console.error(`Failed to delete graph with ID ${id}:`, err);
-      setError("Failed to delete the graph.");
+      setError(ErrorMessages.DELETE_GRAPH_FAILED);
     }
   };
 
@@ -95,9 +117,9 @@ const GraphList = () => {
           ) : error ? (
             <p className="error-message">{error}</p>
           ) : cardsData.length > 0 ? (
-            cardsData.map((card, index) => (
+            cardsData.map((card) => (
               <CardItem
-                key={index}
+                key={card.id}
                 card={card}
                 onClick={card.onClick}
                 onDeleteClick={card.onDeleteClick}
