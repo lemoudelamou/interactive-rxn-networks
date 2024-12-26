@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/crn.jpeg";
-import CardItem from "../utils/CardItems.js";
+import CardItem from "../chart-card/CardItems.js";
 import "../style/GraphList.css";
 import Header from "../components/Header.js";
 import Footer from "../components/Footer.js";
 import { getAllData, deleteGraph } from "../api/api.js";
 import ErrorMessages from "../constants/ErrorMessages"; 
-import SuccessMessages from "../constants/SuccessMessages"; 
 
 const GraphList = () => {
   const [cardsData, setCardsData] = useState([]);
