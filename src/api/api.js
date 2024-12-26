@@ -1,77 +1,128 @@
-import axios from 'axios';
+import ErrorMessages from "../constants/ErrorMessages";
 
+const API_BASE_URL = "http://localhost:5000/";
 
-const API_BASE_URL = 'http://localhost:8081/api';
+export const uploadPickleFile = async (pickleFileFirst, pickleFileSecond) => {
+  const formData = new FormData();
+  
+  formData.append("file_1", pickleFileFirst);
+  formData.append("file_2", pickleFileSecond);
 
+  try {
+    const uploadResponse = await fetch(`${API_BASE_URL}/upload`, {
+      method: "POST",
+      body: formData,
+    });
 
-export const saveFileData = async (fileName, data) => {
-    try {
-        // Prepare form data
-        const formData = new FormData();
-        formData.append('fileName', fileName);
-        formData.append('data', data); 
-        const response = await axios.post(`${API_BASE_URL}/files`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        return response.data;
-    } catch (error) {
-        console.log('Error saving data to the database', error);
-        throw error;
+    if (uploadResponse.ok) {
+      return await uploadResponse.json();
+    } else {
+      const errorData = await uploadResponse.json();
+      throw new Error(errorData.error || ErrorMessages.UPLOAD_FILES_ERROR);
     }
+  } catch (error) {
+    throw new Error(ErrorMessages.UPLOAD_FILES_ERROR);
+  }
 };
 
+export const saveData = async (formData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/save`, {
+      method: "POST",
+      body: formData,
+    });
 
-export const getFileData = async () => {
-    try {
+    const responseData = await response.json();
 
-        const response = await axios.get(`${API_BASE_URL}/files/graph.dot`);
-        console.log(' display files data:', response.data);
-        return response.data;
-    } catch (error) {
-        console.error('Error retrieving file data:', error);
-        throw error;
+    if (response.ok) {
+      return responseData;
+    } else {
+      throw new Error(responseData.error || ErrorMessages.DATA_SAVE_ERROR);
     }
+  } catch (error) {
+    throw new Error(ErrorMessages.DATA_SAVE_ERROR);
+  }
 };
 
+export const deleteGraph = async (graphId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/delete/${graphId}`, {
+      method: "DELETE",
+    });
 
-export const getFileDataById = async () => {
-    try {
+    const responseData = await response.json();
 
-        const response = await axios.get(`${API_BASE_URL}/files/id/20`);
-        console.log(' display files data:', response.data);
-        return response.data;
-    } catch (error) {
-        console.error('Error retrieving file data:', error);
-        throw error;
+    if (response.ok) {
+      return responseData;
+    } else {
+      throw new Error(responseData.error || ErrorMessages.ERROR_DELETING_GRAPH);
     }
+  } catch (error) {
+    throw new Error(ErrorMessages.ERROR_DELETING_GRAPH);
+  }
 };
 
+export const getAllData = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/get_all_data`, {
+      method: "GET",
+    });
 
+    const responseData = await response.json();
 
-export const getAllFileData = async () => {
-    try {
-        // Assuming your API endpoint for all files data is '/files/data'
-        const response = await axios.get(`${API_BASE_URL}/files/data`);
-        console.log('Display all files data:', response.data);
-        return response.data;
-    } catch (error) {
-        console.error('Error retrieving all file data:', error);
-        throw error;
+    if (response.ok) {
+      return responseData;
+    } else {
+      throw new Error(responseData.error || ErrorMessages.ERROR_FETCHING_DATA);
     }
+  } catch (error) {
+    throw new Error(ErrorMessages.ERROR_FETCHING_DATA);
+  }
 };
 
+export const getDataById = async (id) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/get_data_id/${id}`, {
+      method: "GET",
+    });
 
-export const deleteGraphById = async (id) => {
+    const responseData = await response.json();
 
-    try {
-        const response = await axios.delete(`${API_BASE_URL}/files/${id}`);
-        console.log('Delete success:', response.data);
-
-        return true;
-    } catch (error) {
-        console.error('Error deleting patient:', error);
-        return false;
+    if (response.ok) {
+      return responseData;
+    } else {
+      throw new Error(responseData.error || ErrorMessages.ERROR_FETCHING_DATA);
     }
+  } catch (error) {
+    throw new Error(ErrorMessages.ERROR_FETCHING_DATA);
+  }
 };
+
+export const saveGraphData = async (nodes, edges, name, pickle_data, free_energy) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/save-data`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name || "default_graph",
+        nodes,
+        edges,
+        pickle_data,
+        free_energy,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || ErrorMessages.DATA_SAVE_ERROR);
+    }
+
+    const result = await response.json();
+    return result.message;
+  } catch (error) {
+    throw new Error(ErrorMessages.DATA_SAVE_ERROR);
+  }
+};
+
