@@ -1,6 +1,5 @@
 import { loadReactionsFromFile } from "./loadReactions";
 import { validateReactionData } from "./validateReactions";
-import { createEdges } from "./createEdges";
 import { addReaction } from "./addReaction";
 
 class ReactionManager {
@@ -12,9 +11,6 @@ class ReactionManager {
     return validateReactionData(...args);
   }
 
-  createEdges(...args) {
-    return createEdges(...args);
-  }
 
   async addReaction(...args) {
     return addReaction(...args);

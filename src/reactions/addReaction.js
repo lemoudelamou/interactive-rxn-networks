@@ -1,21 +1,48 @@
-import { loadReactionsFromFile } from "./loadReactions";
+import { reactionManager } from "./ReactionManager";
 import { validateReactionData } from "./validateReactions";
-import { createEdges } from "./createEdges";
-import { getFileDataById, getAllFileData } from '../api/api';
 
+let previousGraphData = { nodes: [], edges: [] };
 
-export async function addReaction(uploadedFile, setNodes, setEdges) {
+export async function addReaction(uploadedFile, pickleData, setNodes, setEdges) {
+  if (!pickleData) {
+    console.error("Pickle data is not loaded.");
+    return;
+  }
 
-  
-  console.log("Adding reaction and edges for formula pathway:", uploadedFile);
 
   try {
-    const reactionData = await loadReactionsFromFile(uploadedFile);
+    const reactionData = await reactionManager.loadReactionsFromFile(uploadedFile, pickleData);
     validateReactionData(reactionData);
 
-    const { edges: fileEdges, extractedData } = reactionData;
-    createEdges(fileEdges, extractedData, setNodes, setEdges);
+    const { edges: newEdges, extractedData: newNodes } = reactionData;
+
+    if (previousGraphData.nodes.length === 0) {
+      previousGraphData = { nodes: newNodes, edges: newEdges };
+      setNodes(newNodes);
+      setEdges(newEdges);
+    } else {
+      const highlightFormulas = newNodes.map((node) => node.formula);
+    
+      const updatedNodes = previousGraphData.nodes.map((node) => ({
+        ...node,
+        isHighlighted: highlightFormulas.includes(node.formula),
+      }));
+    
+      const highlightedNodeIds = new Set(
+        updatedNodes.filter((node) => node.isHighlighted).map((node) => node.id)
+      );
+    
+      const updatedEdges = previousGraphData.edges.map((edge) => ({
+        ...edge,
+        isHighlighted:
+          highlightedNodeIds.has(edge.from) && highlightedNodeIds.has(edge.to),
+      }));
+    
+      setNodes(updatedNodes);  
+      setEdges(updatedEdges);  
+    }
+    
   } catch (error) {
-    throw new Error(`Failed to process reaction data: ${error.message}`);
+    console.error(`Error processing file: ${error.message}`);
   }
 }
