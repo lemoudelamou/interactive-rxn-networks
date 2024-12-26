@@ -1,0 +1,148 @@
+
+.page-container {
+  padding: 20px;
+  min-height: calc(100vh - 50px); 
+  display: flex;
+  flex-direction: column;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Body style */
+body {
+  overflow: auto; 
+  margin: 0;
+  padding: 0; 
+  background:#f9f9f9;
+
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+}
+
+
+.App {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  text-align: center;
+  color: #3f8176;
+  margin-top: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 950px) {
+  .header {
+    display: flex;            
+    align-items: center;     
+    justify-content:flex-start;  
+    gap: 10px;                
+  }
+
+  
+
+}
+.rate-control-container {
+  border: 2px solid #ccc; 
+  border-radius: 8px; 
+  padding: 20px; 
+  margin: 20px auto; 
+  background-color: #f9f9f9; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  max-width: 1200px;
+  margin-bottom: 100px;
+
+}
+
+
+
+.button-style {
+  padding: 10px 20px;
+  background-color: #3f8176;
+  color: white;
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-left: 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative; 
+}
+
+.button-style:hover {
+  background-color: #75bcca;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.cancel-btn {
+  padding: 10px 20px;
+  background-color: #ed0e0e;
+  color: white;
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-left: 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative; 
+}
+
+.cancel-btn:hover {
+  background-color: #ae1e1e;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.message {
+  font-size: 1rem;
+  padding-top: 10px;
+  padding-left: 80px;
+  padding-right: 80px;
+}
+
+.message.success {
+  color: green;
+    font-size: 12px;
+    margin-top: 5px;
+    padding: 5px;
+    margin-top: 20px;
+    border: 1px solid green;
+    background-color: #b5edb7;
+    border-radius: 5px;
+}
+
+.message.error {
+  color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-top: 20px;
+    padding: 5px;
+    border: 1px solid red;
+    background-color: #ffe6e6;
+    border-radius: 5px;
+}
+
+
+
+@media (max-width: 768px) {
+  .chart-container {
+    width: 100%;
+  }
+}
