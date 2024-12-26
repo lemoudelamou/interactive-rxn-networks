@@ -1,147 +1,166 @@
-import React, { useState } from "react";
-import { reactionManager } from "../reactions/ReactionManager";
+import React, { useState, useContext, useEffect } from "react";
+import { PickleContext } from "../context/FileDataContext";
+import { handleShowGraph, handleSaveData, readJsonFile } from "../utils/GraphUtils";
+import { uploadPickleFile } from "../api/api";
 import "../style/FileUpload.css";
-import { saveFileData } from "../api/api";
-import { loadReactionsFromFile } from "../reactions/loadReactions";
+import ErrorMessages from "../constants/ErrorMessages"; 
+import SuccessMessages from "../constants/SuccessMessages"; 
 
 const FileUpload = ({ setNodes, setEdges }) => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [renamedFileName, setRenamedFileName] = useState("");
+  const { pickleData, updatePickleData, freeEnergyData, updateFreeEnergyData } = useContext(PickleContext);
+
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFilesSecond, setSelectedFilesSecond] = useState([]);
+  const [selectedPickleFileFirst, setSelectedPickleFileFirst] = useState(null);
+  const [selectedPickleFileSecond, setSelectedPickleFileSecond] = useState(null);
+  const [selectedJsonFile, setSelectedJsonFile] = useState(null);
   const [isGraphReady, setIsGraphReady] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRenameModalOpen, setIsRenameModalOpen] = useState(false); 
+  const [isLoadingPickle, setIsLoadingPickle] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-
-    if (file) {
-      if (file.name.endsWith(".dot")) {
-        setSelectedFile(file);
-        setRenamedFileName(file.name.replace(".dot", "")); 
-        setIsGraphReady(false);
+  // Timer to clear messages
+  useEffect(() => {
+    if (errorMessage || successMessage) {
+      const timer = setTimeout(() => {
         setErrorMessage("");
-      } else {
-        setSelectedFile(null);
-        setRenamedFileName("");
-        setErrorMessage("Invalid file type. Please upload a .dot file.");
-      }
-    } else {
-      setSelectedFile(null);
-      setRenamedFileName("");
-      setErrorMessage("Please select a file.");
-    }
-  };
-
-  const handleShowGraph = async () => {
-    if (selectedFile) {
-      setIsLoading(true);
-      setNodes([]);
-      setEdges([]);
-
-      try {
-        await reactionManager.addReaction(selectedFile, setNodes, setEdges);
-
-        setTimeout(() => {
-          setIsLoading(false);
-          setIsGraphReady(true);
-        }, 200);
-      } catch (error) {
-        setTimeout(() => {
-          console.error(error);
-          setIsLoading(false);
-          setErrorMessage(error.message);
-        }, 200);
-      }
-    }
-  };
-
-  const handleSaveData = async () => {
-    try {
-      const reactionData = await loadReactionsFromFile(selectedFile);
-      const finalFileName = renamedFileName || localStorage.getItem("uploadedFileName");
-      const reactionDataString = JSON.stringify(reactionData);
-
-      await saveFileData(finalFileName, reactionDataString);
-
-      setSuccessMessage("Data saved successfully!");
-      setIsRenameModalOpen(false); 
-
-      setTimeout(() => {
         setSuccessMessage("");
-      }, 10000);
-    } catch (error) {
-      setErrorMessage("Error saving data.");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage, successMessage]);
 
-      setTimeout(() => {
-        setErrorMessage("");
-      }, 10000);
+  useEffect(() => {
+    if (pickleData && selectedFiles.length > 0) {
+      handleShowGraph(
+        pickleData,
+        selectedFiles,
+        selectedFilesSecond,
+        setNodes,
+        setEdges,
+        false, 
+        setMessage 
+      )
+        .then(() => setIsGraphReady(true))
+        .catch((error) => setErrorMessage(error.message));
+    } else if (selectedFiles.length > 0) {
+      setIsGraphReady(false);
+    }
+  }, [pickleData, selectedFiles, selectedFilesSecond, setNodes, setEdges]);
+  
+
+  const isValidFile = (file, extensions) =>
+    extensions.some((ext) => file?.name.endsWith(ext));
+
+  const handleFileChange = (event, fileType) => {
+    const files = Array.from(event.target.files);
+    const file = files[0];
+
+    switch (fileType) {
+      case "jsonFile":
+        if (isValidFile(file, [".json"])) {
+          setSelectedJsonFile(file);
+          setErrorMessage("");
+        } else {
+          setSelectedJsonFile(null);
+          setErrorMessage(ErrorMessages.INVALID_FILE_JSON);
+        }
+        break;
+      case "first":
+      case "second":
+        if (files.every((f) => isValidFile(f, [".dot"]))) {
+          fileType === "first" ? setSelectedFiles(files) : setSelectedFilesSecond(files);
+          setErrorMessage("");
+        } else {
+          setErrorMessage(ErrorMessages.INVALID_FILE_DOT);
+        }
+        break;
+      case "pickleFirst":
+      case "pickleSecond":
+        if (isValidFile(file, [".pickle", ".pkl"])) {
+          fileType === "pickleFirst" ? setSelectedPickleFileFirst(file) : setSelectedPickleFileSecond(file);
+          setErrorMessage("");
+        } else {
+          setErrorMessage(ErrorMessages.INVALID_FILE_PICKLE);
+        }
+        break;
+      default:
+        setErrorMessage(ErrorMessages.UNSUPPORTED_FILE_TYPE);
     }
   };
 
-  const handleRenameSubmit = () => {
-    setIsRenameModalOpen(false); 
-    handleSaveData(); 
+  const handleLoadAllFiles = async () => {
+    if (
+      !selectedPickleFileFirst ||
+      !selectedPickleFileSecond ||
+      !selectedJsonFile ||
+      selectedFiles.length === 0 ||
+      selectedFilesSecond.length === 0
+    ) {
+      setErrorMessage(ErrorMessages.MISSING_REQUIRED_FILES);
+      return;
+    }
+
+    setIsLoadingPickle(true);
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    try {
+      const pickleDataResponse = await uploadPickleFile(selectedPickleFileFirst, selectedPickleFileSecond);
+      updatePickleData(pickleDataResponse);
+
+      const jsonData = await readJsonFile(selectedJsonFile);
+      updateFreeEnergyData(jsonData);
+
+      setSuccessMessage(SuccessMessages.FILES_PROCESSED);
+    } catch (error) {
+      setErrorMessage(`${ErrorMessages.UPLOAD_FILES_ERROR}: ${error.message}`);
+    } finally {
+      setIsLoadingPickle(false);
+    }
   };
 
   return (
     <div className="container_upload">
-      <h3>Upload a .dot File</h3>
-      <div className="upload-box">
-        <input type="file" onChange={handleFileChange} />
+      <h1>Upload Graph Data</h1>
+      <div className="upload-wrapper">
+        <div className="upload-box">
+          <h3>Graph (.dot)</h3>
+          <input type="file" onChange={(e) => handleFileChange(e, "first")} />
+        </div>
+
+        <div className="upload-box">
+          <h3>Subnetwork (.dot)</h3>
+          <input type="file" onChange={(e) => handleFileChange(e, "second")} />
+        </div>
+
+        <div className="upload-box">
+          <h3>Subnet attributes (.pkl)</h3>
+          <input type="file" onChange={(e) => handleFileChange(e, "pickleFirst")} />
+        </div>
+
+        <div className="upload-box">
+          <h3>Species name (.pkl)</h3>
+          <input type="file" onChange={(e) => handleFileChange(e, "pickleSecond")} />
+        </div>
+
+        <div className="upload-box">
+          <h3>Energy data (.json)</h3>
+          <input type="file" onChange={(e) => handleFileChange(e, "jsonFile")} />
+        </div>
+
         <button
-          className="process-file-button"
-          onClick={handleShowGraph}
-          disabled={!selectedFile || isLoading}
+          className="button-style"
+          onClick={handleLoadAllFiles}
+          disabled={isLoadingPickle}
         >
-          {isLoading ? "Processing..." : "Show Graph"}
-        </button>
-        <button
-          className="process-file-button"
-          onClick={() => setIsRenameModalOpen(true)} 
-          disabled={!selectedFile}
-        >
-          Save
+          {isLoadingPickle ? "Processing..." : "Load All Files"}
         </button>
       </div>
 
-      {isLoading && (
-        <div className="spinner-overlay">
-          <div className="spinner"></div>
-        </div>
-      )}
-
-      {errorMessage && (
-        <div className="error-message">
-          <p>{errorMessage}</p>
-        </div>
-      )}
-
-      {successMessage && (
-        <div className="success-message">
-          <p>{successMessage}</p>
-        </div>
-      )}
-
-      
-      {isRenameModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h4>Choose title for the graph</h4>
-            <input
-              type="text"
-              value={renamedFileName}
-              onChange={(e) => setRenamedFileName(e.target.value)}
-              placeholder="Enter new file name"
-            />
-            <div className="modal-buttons">
-              <button onClick={handleRenameSubmit}>Save</button>
-              <button onClick={() => setIsRenameModalOpen(false)}>Cancel</button>
-            </div>
-          </div>
-        </div>
-      )}
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      {successMessage && <div className="success-message">{successMessage}</div>}
     </div>
   );
 };
