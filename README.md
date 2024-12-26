@@ -4,13 +4,17 @@
 
 
 
+
+
 Software project "Interactive Generation and Visualization of Chemical Reaction Networks" for the academic course "Master Project WiSe24/25" at the Berliner Hochschule für Technik (BHT), in cooperation with the Fritz-Haber-Institut (FHI) of the Max-Planck-Gesellschaft.
 
 
 
 ## Prerequisites 
 
-Before you start... Everything you need to successfully run and develop this project is described in this README.
+Before you start... 
+
+Everything you need to successfully run and develop this project is described in this README.
 
 ## Requirements
 
@@ -80,18 +84,19 @@ Before you start... Everything you need to successfully run and develop this pro
 
 The repository consistently holds two branches, main and dev.
 
-### Main Branch
+### [Main Branch](https://github.com/lemoudelamou/master-project/tree/main)
 
 Considered as the "release" branch. Commits on this branch need to be approved via Pull Request by a minimum of one other team member. The branch requires a linear Git history.
 
-### dev Branch
+### [dev Branch](https://github.com/lemoudelamou/master-project/tree/dev)
 
 Considered as the "newest features/fixes" branch This is a fast-paced branch for internal development, so expect a lot of changes while you are working on it. Holds the latest additions to the code base.
 
 
 ## Frontend and Backend
 
-### Frontend 
+### [Frontend](https://github.com/lemoudelamou/master-project/tree/dev/frontend) 
+
 
 * Simulation visualization layer for the web browser 
 * Readme 
@@ -114,7 +119,7 @@ Serve the app:
         serve -s build
 
 
-### Backend
+### [Backend](https://github.com/lemoudelamou/master-project/tree/dev/backend)
 
 * Create a virtual environment:
  
@@ -130,12 +135,14 @@ Serve the app:
     
             source venv/bin/activate
 
+	* For more information, refer to this link: [https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/]
+
 * Install dependencies: 
 
     * Ensure you have pip installed and a Python environment set up.
 
             pip install -r requirements.txt
-    * You will need to install the CatMAP package. The steps to follow can be found at this link: https://catmap.readthedocs.io/en/latest/installation.html#
+    * You will need to install the CatMAP package. The steps to follow can be found at this link: [https://catmap.readthedocs.io/en/latest/installation.html#]
 
 * Run the backend: 
 
