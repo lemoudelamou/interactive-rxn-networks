@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import "../style/DataVizualisation.css";
-import Chart from "../utils/Chart";
+import Chart from "../chart-card/Chart";
 import { getDataById } from "../api/api.js";
 import { PickleContext } from "../context/FileDataContext";
 
