@@ -1,33 +1,99 @@
 .graph-page {
-    text-align: center;
-    padding: 20px;
-    
+  text-align: center;
+}
+
+.graph-page h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.4);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #3f8176;
+  color: #ffffff;
+  border-radius: 8px;
+}
+
+.button-viz {
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #3f8176;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative; 
+}
+
+.button-viz:hover {
+  background-color: #75bcca;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.button-container {
+  position: fixed; 
+  bottom: -15%; 
+  left: 20%; 
+  right: 20%;
+  width: 70%; 
+  height: 50px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  border-radius: 10px;
+  background-color: #3f8176;
+  gap: 20px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); 
+  z-index: 10; 
+}
+
+.button-container button {
+  background-color: #3f8176;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button-container button:hover {
+  background-color: #75bcca;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.button-container button:focus {
+  outline: none;
+}
+
+@media only screen and (max-width: 950px) {
+  .button-container {
+    bottom: -15%;
+    padding: 10px 0;
   }
-  
+
+  .button-container button {
+    margin-bottom: 10px;
+    font-size: 0.7rem; 
+    width: 80%; 
+  }
+
   .graph-page h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.4);
-    padding-top: 20px;
-    padding-bottom: 20px;
-    background-color: #3f8176;
-    color:#ffffff;
+    font-size: 20px;
+    padding: 15px;
+    margin-bottom: 100px;
   }
-  
-  .back-button {
-    background-color: #3f8176;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 20px;
+}
+
+
+
+@media only screen and (max-width: 1024px) {
+  .button-container {
+    bottom: -8%;
   }
-  
-  .back-button:hover {
-    background-color: #0056b3;
-  }
-  
+}
+

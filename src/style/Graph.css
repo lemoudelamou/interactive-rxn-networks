@@ -9,10 +9,12 @@
   display: flex;
   flex-direction: row;
   height: auto;
-  margin-top: 10px;
-  padding-bottom: 100px;
+  padding-top: 15px;
+  padding-bottom: 70px;
+  border-radius: 10px;
   position: relative;
   transition: all 0.3s ease-in-out;
+  margin: 85px 60px 20px 40px;
 
 }
 
@@ -22,8 +24,6 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: #fff;
-  z-index: 1000;
 }
 
 .screenshot-area {
