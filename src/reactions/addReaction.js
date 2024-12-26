@@ -1,5 +1,4 @@
 import { reactionManager } from "./ReactionManager";
-import { validateReactionData } from "./validateReactions";
 
 let previousGraphData = { nodes: [], edges: [] };
 
@@ -12,7 +11,7 @@ export async function addReaction(uploadedFile, pickleData, setNodes, setEdges) 
 
   try {
     const reactionData = await reactionManager.loadReactionsFromFile(uploadedFile, pickleData);
-    validateReactionData(reactionData);
+    reactionManager.validateReactionData(reactionData);
 
     const { edges: newEdges, extractedData: newNodes } = reactionData;
 
