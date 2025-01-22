@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
     "chart.js": "^4.4.7",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "graphlib-dot": "^0.6.4",
     "html2canvas": "^1.4.1",
     "rc-slider": "^11.1.7",
