@@ -48,18 +48,7 @@ function App() {
     });
   };
 
-  useEffect(() => {
-    const rateControlData = pickleData?.data?.rate_control || [];
-    const processedRateControlData = rateControlData.map((item) => {
-      const compound = Object.keys(item)[0];
-      const properties = Object.entries(item[compound]).map(([label, details]) => ({
-        label,
-        value: details.value,
-      }));
-      return { compound, properties };
-    });
-    setTableData(processedRateControlData);
-  }, [pickleData]);
+ 
 
   return (
     <div className="App">
