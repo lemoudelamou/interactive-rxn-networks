@@ -5,18 +5,19 @@
 
 .sidebar {
   width: 500px;
-  padding: 10px;
-  height: 100vh;
+  padding: 15px;
+  height: 95%;
   margin-top: auto;
   background: #3f8176;
   overflow-y: auto;
   box-shadow: 0 2px 5px rgba(99, 97, 97, 0.1);
   position: fixed;
   top: 0;
-  margin-top: 81px;
+  bottom: 20;
+  margin-top: 60px;
+  margin-bottom: 20px;
   right: -480px;  
   transition: right 0.3s ease-in-out, left 0.3s ease-in-out; 
-  margin-bottom: 700px;
   z-index: 1000;
 }
 
@@ -115,7 +116,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.6rem;
-  margin: 20px 0;
+  margin: 40px 0;
   border-radius: 40px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
@@ -198,7 +199,7 @@
     top: 0;
     margin-top: 61px;
     right: -250px;  
-    transition: right 0.3s ease-in-out, left 0.3s ease-in-out; /* Smooth transition for the sliding effect */
+    transition: right 0.3s ease-in-out, left 0.3s ease-in-out; 
     margin-bottom: 400px;
     z-index: 1000;
   }
