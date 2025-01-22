@@ -102,12 +102,14 @@ free_energy_data = get_free_energy_map_data([reaction_model], toremove=toremove,
 # Print or process the free energy data
 print(free_energy_data)
 
-# Save the free energy data to a JSON file
-output_file_path = "free_energy_data.json"
-with open(output_file_path, 'w') as json_file:
+# Prompt the user to input the desired output file name
+output_file_name = input("Enter the desired name for the output file (include .json extension): ")
+
+# Save the free energy data to the specified JSON file
+with open(output_file_name, 'w') as json_file:
     json.dump(free_energy_data, json_file, indent=4)
 
-print(f"Free energy data has been saved to {output_file_path}")
+print(f"Free energy data has been saved to {output_file_name}")
 
 `;
 
