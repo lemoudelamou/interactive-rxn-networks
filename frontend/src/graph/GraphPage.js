@@ -12,10 +12,11 @@ const GraphPage = () => {
   const { pickleData, freeEnergyData } = useContext(PickleContext);
 
   const [selectedNode, setSelectedNode] = useState(null);
-  const [tofCoverageData, setTofCoverageData] = useState([]);
   const [nodeDetailsData, setNodeDetailsData] = useState([]);
+  const [highlightedFormulas, setHighlightedFormulas] = useState([]);
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
+  
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [highlightToggled, setHighlightToggled] = useState(false);
@@ -42,6 +43,7 @@ const GraphPage = () => {
         rxnID: item.rxnID,
         isHighlighted: false,
         originalHighlight: item.isHighlighted,
+        level: item.level,
       }));
 
       const graphEdges = initialEdges.map((edge) => ({
@@ -74,27 +76,70 @@ const GraphPage = () => {
     });
   }, [data]);
 
+  console.log("rate: ", rateControlData)
+
+
+  const tofData = useMemo(() => {
+    return (data?.TOF || []).flatMap((item) => {
+      return Object.entries(item).map(([label, value]) => {
+        const extractedValue = value && value.TOF !== undefined ? value.TOF : value;
+        
+        const finalValue = typeof extractedValue === 'object' 
+          ? JSON.stringify(extractedValue) 
+          : extractedValue;
+  
+        return { label, value: finalValue };
+      });
+    });
+  }, [data]);
+  
+  
+
+  const coverageData = useMemo(() => {
+    return (data?.coverage || []).flatMap((item) => {
+      return Object.entries(item).map(([label, value]) => {
+        const extractedValue = value && value.coverage !== undefined ? value.coverage : value;
+        
+        const finalValue = typeof extractedValue === 'object' 
+          ? JSON.stringify(extractedValue) 
+          : extractedValue;
+  
+        return { label, value: finalValue };  
+      });
+    });
+  }, [data]);
+  
+
+  
+  useEffect(() => {
+    const filteredFormulas = nodes
+      .filter((node) => node.isHighlighted && node.formula.includes("="))
+      .map((node) => node.formula);
+  
+    setHighlightedFormulas(filteredFormulas);
+  
+    console.log("Highlighted Formulas with '=' symbol:", filteredFormulas);
+  }, [nodes]); 
+  
+  
+
   useEffect(() => {
     if (selectedNode) {
-      const tofData = data?.TOF?.find((item) => item[`${selectedNode.formula}_g`]) || {};
-      const coverageData = data?.coverage?.find((item) => item[`${selectedNode.formula}_s`]) || {};
-      const speciesData = data?.species_name?.find((item) => item.smiles === selectedNode.smiles) || {};
-
-      setTofCoverageData([
-        { property: "TOF", value: tofData?.TOF || "N/A" },
-        { property: "Coverage", value: coverageData?.coverage || "N/A" },
-        { property: "Species", value: speciesData?.label || "No matching species found" },
-      ]);
-
+      const speciesEntry = data?.species_name?.find((item) => item.smiles === selectedNode.smiles) || {};
+  
       setNodeDetailsData([
         { property: "Formula", value: selectedNode.formula },
         { property: "Smiles", value: selectedNode.smiles },
+        { property: "Species", value: speciesEntry?.label || "No matching species found" },
+        { property: "Level", value: selectedNode.level },
+
       ]);
     } else {
-      setTofCoverageData([]);
       setNodeDetailsData([]);
     }
   }, [selectedNode, data]);
+  
+  
 
   const toggleHighlights = useCallback(() => {
     setHighlightToggled((prevState) => !prevState);
@@ -133,8 +178,12 @@ const GraphPage = () => {
           <Sidebar
             selectedNode={selectedNode}
             tableData={rateControlData}
-            tofCoverageData={tofCoverageData}
+            tofData={tofData}
+            coverageData={coverageData}
+            nodeDetailsData={nodeDetailsData}
             highlightToggled={highlightToggled}
+            highlightedFormulas={highlightedFormulas}
+            allData={extractedData}
           />
           {isModalOpen && (
             <DataVizualisation
