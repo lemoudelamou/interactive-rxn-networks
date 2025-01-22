@@ -15,6 +15,7 @@ const DataVizualisation = ({ isOpen, onClose, id }) => {
   const { pickleData, freeEnergyData } = useContext(PickleContext);
 
   const processTOFData = useCallback((TOFDict) => {
+    console.log("TOF data: ", TOFDict)
     const labels = Object.keys(TOFDict);
     const values = Object.values(TOFDict);
 
@@ -33,37 +34,44 @@ const DataVizualisation = ({ isOpen, onClose, id }) => {
   }, []);
 
   const processRateControlData = useCallback((rateControl) => {
-    return rateControl.map((item) => {
-      const compound = Object.keys(item)[0];
-      const properties = item[compound];
-
-      const labels = [];
-      const values = [];
-
-      Object.entries(properties).forEach(([key, propertyValue]) => {
-        if (key !== "smiles") {
-          labels.push(key);
-          values.push(propertyValue.value);
-        }
+    console.log("rate control: ", rateControl);
+    return rateControl
+      .filter(item => {
+        const compound = Object.keys(item)[0];
+        return compound !== "H2_g" && compound !== "H2O_g"; 
+      })
+      .map((item) => {
+        const compound = Object.keys(item)[0];
+        const properties = item[compound];
+  
+        const labels = [];
+        const values = [];
+  
+        Object.entries(properties).forEach(([key, propertyValue]) => {
+          if (key !== "smiles") {
+            labels.push(key);
+            values.push(propertyValue.value);
+          }
+        });
+  
+        return {
+          compound,
+          chartData: {
+            labels,
+            datasets: [
+              {
+                label: `${compound}`,
+                data: values,
+                backgroundColor: "rgba(153, 102, 255, 0.6)",
+                borderColor: "rgba(153, 102, 255, 1)",
+                borderWidth: 2,
+              },
+            ],
+          },
+        };
       });
-
-      return {
-        compound,
-        chartData: {
-          labels,
-          datasets: [
-            {
-              label: `${compound}`,
-              data: values,
-              backgroundColor: "rgba(153, 102, 255, 0.6)",
-              borderColor: "rgba(153, 102, 255, 1)",
-              borderWidth: 2,
-            },
-          ],
-        },
-      };
-    });
   }, []);
+  
 
   const processFreeEnergyData = useCallback((freeEnergy) => {
     return {
@@ -77,10 +85,10 @@ const DataVizualisation = ({ isOpen, onClose, id }) => {
           borderWidth: 2,
           fill: false,
           type: "line",
-          pointStyle: "circle",
-          pointRadius: 4,
+          pointStyle: "line",
+          pointRadius: 10,
           pointBackgroundColor: "rgba(75, 192, 192, 1)",
-          borderDash: [5, 5],
+          borderDash: [8, 8],
         },
       ],
     };
@@ -154,7 +162,7 @@ const DataVizualisation = ({ isOpen, onClose, id }) => {
                 rateControlChartData.map(({ compound, chartData }) => (
                   <div key={compound}>
                     <h4>{compound} Rate Control</h4>
-                    <Chart chartData={chartData} isLineChart={true} />
+                    <Chart chartData={chartData} isLineChart={true}  />
                   </div>
                 ))
               ) : (
