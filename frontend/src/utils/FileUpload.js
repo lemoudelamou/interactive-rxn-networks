@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { PickleContext } from "../context/FileDataContext";
-import { handleShowGraph, handleSaveData, readJsonFile } from "./GraphUtils";
+import { handleShowGraph, readJsonFile } from "./GraphUtils";
 import { uploadPickleFile } from "../api/api";
 import "../style/FileUpload.css";
 import ErrorMessages from "../constants/ErrorMessages"; 
@@ -20,7 +20,6 @@ const FileUpload = ({ setNodes, setEdges }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [message, setMessage] = useState("");
 
-  // Timer to clear messages
   useEffect(() => {
     if (errorMessage || successMessage) {
       const timer = setTimeout(() => {
