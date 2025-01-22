@@ -1,6 +1,6 @@
 import ErrorMessages from "../constants/ErrorMessages";
 
-const API_BASE_URL = "http://localhost:5000/";
+const API_BASE_URL = "http://localhost:5000";
 
 export const uploadPickleFile = async (pickleFileFirst, pickleFileSecond) => {
   const formData = new FormData();
@@ -25,24 +25,7 @@ export const uploadPickleFile = async (pickleFileFirst, pickleFileSecond) => {
   }
 };
 
-export const saveData = async (formData) => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/save`, {
-      method: "POST",
-      body: formData,
-    });
 
-    const responseData = await response.json();
-
-    if (response.ok) {
-      return responseData;
-    } else {
-      throw new Error(responseData.error || ErrorMessages.DATA_SAVE_ERROR);
-    }
-  } catch (error) {
-    throw new Error(ErrorMessages.DATA_SAVE_ERROR);
-  }
-};
 
 export const deleteGraph = async (graphId) => {
   try {
