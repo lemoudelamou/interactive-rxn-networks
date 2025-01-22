@@ -1,5 +1,4 @@
 import { reactionManager } from "../reactions/ReactionManager";
-import { saveData } from "../api/api";
 import ErrorMessages from "../constants/ErrorMessages"; 
 
 export const readJsonFile = (file) => {
@@ -51,52 +50,4 @@ export const handleShowGraph = async (
   }
 };
 
-export const handleSaveData = async (
-  selectedFiles,
-  selectedFilesSecond,
-  pickleData,
-  isHighlighted,
-  setMessage
-) => {
-  if (!selectedFiles.length || !selectedFilesSecond.length) {
-    setMessage?.(ErrorMessages.NO_FILES_TO_SAVE);
-    setTimeout(() => setMessage?.(""), 5000);
-    return;
-  }
 
-  try {
-    const [reactionsDataFirstFile, reactionsDataSecondFile] = await Promise.all([
-      reactionManager.loadReactionsFromFile(selectedFiles[0], pickleData),
-      reactionManager.loadReactionsFromFile(selectedFilesSecond[0], pickleData),
-    ]);
-
-    const mergedFirstData = mergeReactionData(reactionsDataFirstFile, isHighlighted);
-    const mergedSecondData = mergeReactionData(reactionsDataSecondFile, isHighlighted);
-
-    const formData = new FormData();
-    formData.append("dot_file_1", JSON.stringify(mergedFirstData));
-    formData.append("dot_file_1_filename", "test");
-    formData.append("dot_file_2", JSON.stringify(mergedSecondData));
-    formData.append("pickle_data", JSON.stringify(pickleData));
-
-    await saveData(formData);
-    setMessage(ErrorMessages.DATA_SAVE_SUCCESS);
-    setTimeout(() => setMessage(""), 5000);
-  } catch (error) {
-    setMessage(`${ErrorMessages.DATA_SAVE_ERROR}: ${error.message}`);
-    setTimeout(() => setMessage(""), 5000);
-  }
-};
-
-const mergeReactionData = (reactionsData, isHighlighted) => {
-  return {
-    extractedData: reactionsData.extractedData.map((node) => ({
-      ...node,
-      isHighlighted,
-    })),
-    edges: reactionsData.edges.map((edge) => ({
-      ...edge,
-      isHighlighted,
-    })),
-  };
-};
